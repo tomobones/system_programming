@@ -48,8 +48,11 @@ void gpio_get_value(int pin, char* buffer) {
     if (!(fp_value = fopen(file_path, "r")))
         err_exit("get_value: Couldn't open file '%s'.", file_path);
 
-    while (!feof(fp_value) || buffer_length < buffer_max)
-        buffer[buffer_length++] = fgetc(fp_value);
+    while (buffer_length < buffer_max) {
+        buffer[buffer_length] = fgetc(fp_value);
+        if(feof(fp_value)) break;
+        buffer_length++;
+    }
 
     buffer[buffer_length] = '\0';
     fclose(fp_value);
