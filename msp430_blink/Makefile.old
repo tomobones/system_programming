@@ -1,0 +1,31 @@
+ifndef $(MSPGCCDIR)
+	MSPGCCDIR=$(HOME)/ti/msp430-gcc
+endif
+#paths
+INCLUDES_DIRECTORY = $(MSPGCCDIR)/include
+
+DEVICE = msp430fr5969
+
+# compiler options
+CC=$(MSPGCCDIR)/bin/msp430-elf-gcc
+
+CFLAGS = -I . -I $(INCLUDES_DIRECTORY) -mmcu=$(DEVICE) -g -mhwmult=f5series
+LFLAGS = -L . -L $(INCLUDES_DIRECTORY)
+
+# mspdebug driver -- used for installation
+DRIVER:= tilib
+
+# Compiling
+all: blink.elf blinktimer.elf
+
+%.elf : %.c
+	$(CC) $(CFLAGS) $(LFLAGS) $< -o $@
+
+
+# Upload to board
+install.%: %.elf
+		mspdebug $(DRIVER) "prog $<" --allow-fw-update
+
+clean:
+	rm -f  *.o *.elf
+
