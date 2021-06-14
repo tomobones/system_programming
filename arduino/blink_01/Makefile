@@ -10,8 +10,9 @@ all: blink.out
 
 #USBPORT=/dev/tty.usbmodem14401
 #USBPORT:=$(shell ls /dev/tty.usbmodem*)
-#USBPORT=/dev/bus/usb/001/054
+#USBPORT=/dev/bus/usb/001/007
 USBPORT=/dev/ttyACM0
+#USBPORT=/dev/ttyACM0
 
 %.out: %.c
 	$(CC) $(CFLAGS) $< -o $@
